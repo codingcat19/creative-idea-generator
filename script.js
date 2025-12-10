@@ -8,22 +8,22 @@ async function generateIdea() {
         return;
     }
 
-    // Show loading animation
     loadingText.classList.remove("hidden");
     resultBox.innerText = "";
 
-
     try {
-        console.log("Generating idea for topic:", topic);
-        const response = await fetch("http://127.0.0.1:5500/generate", {
+        console.log("Sending request to backend with topic:", topic);
+        const response = await fetch("http://127.0.0.1:5000/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ topic })
         });
 
+        if (!response.ok) {
+            throw new Error("Server returned " + response.status);
+        }
 
         const data = await response.json();
-        console.log('data:', data);
         resultBox.innerText = data.idea;
 
     } catch (error) {
@@ -31,6 +31,5 @@ async function generateIdea() {
         console.error(error);
     }
 
-    // Hide loading
     loadingText.classList.add("hidden");
 }
