@@ -12,9 +12,7 @@ if not api_key:
 genai.configure(api_key=api_key)
 
 def generate_idea(topic: str) -> str:
-    model = genai.GenerativeModel("gemini-2.5-flash")
+    model = genai.GenerativeModel("models/gemini-2.5-flash")
     prompt = f"Generate a creative one sentance idea based on this topic: {topic}"
     response = model.generate_content(prompt)
     return response.text.strip()
-
-

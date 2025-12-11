@@ -11,11 +11,18 @@ def home():
 
 @app.post("/generate")
 def create_idea():
-    data = request.get_json()
-    topic = data.get("topic")
+    try:
+        data = request.get_json()
+        topic = data.get("topic")
 
-    idea = generate_idea(topic)
-    return jsonify({"idea": idea})
+        if not topic:
+            return jsonify({"error": "Topic is required"}), 400
+
+        idea = generate_idea(topic)
+        return jsonify({"idea": idea})
+    except Exception as e:
+        print(f"Error generating idea: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(debug=True)
