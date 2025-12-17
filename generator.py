@@ -23,24 +23,41 @@ def generate_idea(topic: str) -> str:
     # Build the prompt with instructions for style and format
 
     prompt = f"""
-            Generate a structured business idea based on the topic: {topic}
+        You are a business idea generator.
 
-             Follow this format strictly:
+        Generate a business idea for the topic: "{topic}"
 
-                Business Idea:
-                - Describe the idea in 2–3 clear, simple sentences.
+        VERY IMPORTANT RULES:
+        - Output MUST be in bullet points
+        - Each bullet point MUST be on a new line
+        - Do NOT merge sections into a paragraph
+        - Do NOT write sentences outside bullet points
+        - Do NOT add extra explanations
+        - Follow the format EXACTLY
 
-                Positive Points:
-                - List 2–3 advantages of this idea.
+        OUTPUT FORMAT (do not change):
 
-                Negative Points:
-                - List 2–3 challenges or risks.
+        Business Idea:
+        - Sentence 1.
+        - Sentence 2.
 
-                Implementation:
-                - Explain briefly how this idea can be implemented in practical steps.
+        Positive Points:
+        - Point 1
+        - Point 2
+        - Point 3
 
-                Use simple language. Avoid fluff words. Be concise and clear.
-                """
+        Negative Points:
+        - Point 1
+        - Point 2
+        - Point 3
+
+        Implementation:
+        - Step 1
+        - Step 2
+        - Step 3
+        """
+
+
     
     # Send the request to Gemini and get the response
     response = model.generate_content(prompt)
