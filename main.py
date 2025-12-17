@@ -15,24 +15,25 @@ def home():
 @app.post("/generate")
 def create_idea():
     try:
-        data = request.get_json()
-        topic = data.get("topic")
+            data = request.get_json()
+            topic = data.get("topic")
 
-        if not topic:
-            return jsonify({"error": "Topic is required"}), 400
+            if not topic:
+                return jsonify({"error": "Topic is required"}), 400
+            
+            normalized_topic=topic.lower().replace(" ","")
+            # Check cache first
+            cached_idea = get_cached_idea(normalized_topic)
+            if cached_idea:
+                return jsonify({"idea": cached_idea})
 
-        # Check cache first
-        cached_idea = get_cached_idea(topic)
-        if cached_idea:
-            return jsonify({"idea": cached_idea})
-
-        # Generate new idea if not cached
-        idea = generate_idea(topic)
-        set_cached_idea(topic, idea)
-        return jsonify({"idea": idea})
+            # Generate new idea if not cached
+            idea = generate_idea(normalized_topic)
+            set_cached_idea(normalized_topic, idea)
+            return jsonify({"idea": idea})
     except Exception as e:
-        print(f"Error generating idea: {str(e)}")
-        return jsonify({"error": str(e)}), 500
+            print(f"Error generating idea: {str(e)}")
+            return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+        app.run(debug=True)

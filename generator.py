@@ -15,15 +15,35 @@ if not api_key:
 genai.configure(api_key=api_key)
 
 def generate_idea(topic: str) -> str:
+
     
     # Initialize the generative model
     model = genai.GenerativeModel("models/gemini-2.5-flash") 
     
     # Build the prompt with instructions for style and format
 
-    prompt = f"Generate a creative one sentance idea based on this topic : {topic} should be simple to  understand and should be display either in table format avoid fluff words."
+    prompt = f"""
+            Generate a structured business idea based on the topic: {topic}
+
+             Follow this format strictly:
+
+                Business Idea:
+                - Describe the idea in 2–3 clear, simple sentences.
+
+                Positive Points:
+                - List 2–3 advantages of this idea.
+
+                Negative Points:
+                - List 2–3 challenges or risks.
+
+                Implementation:
+                - Explain briefly how this idea can be implemented in practical steps.
+
+                Use simple language. Avoid fluff words. Be concise and clear.
+                """
     
     # Send the request to Gemini and get the response
     response = model.generate_content(prompt)
         # Return the clean text output
-    return response.text.strip()
+    text = response.text.strip()
+    return text
