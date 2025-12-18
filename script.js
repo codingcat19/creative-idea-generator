@@ -57,90 +57,75 @@ async function generateIdea() {
     const resultBox = document.getElementById("result");
     const loadingText = document.getElementById("loading");
 
-    // Validate and sanitize input
     const validation = validateAndSanitizeInput(topic);
 
     if (!validation.valid) {
         safeDisplayText(resultBox, validation.error);
-        resultBox.style.color = "#ff6b6b"; // Red color for errors
+        resultBox.style.color = "#ff6b6b"; 
         return;
     }
 
-    // Reset result box styling
     resultBox.style.color = "";
     loadingText.classList.remove("hidden");
-    safeDisplayText(resultBox, "");
+    resultBox.innerHTML = ""; // Clear previous content
 
     try {
-        console.log("Sending request to backend with topic:", validation.value);
-
         const response = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "http://127.0.0.1:5000/generate", true);
             xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.setRequestHeader("Accept", "application/json");
-
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     if (xhr.status === 200) {
-                        try {
-                            const data = JSON.parse(xhr.responseText);
-                            resolve(data);
-                        } catch (parseError) {
-                            reject(new Error("Invalid response from server"));
-                        }
-                    } else if (xhr.status === 400) {
-                        try {
-                            const errorData = JSON.parse(xhr.responseText);
-                            reject(new Error(errorData.error || "Invalid request"));
-                        } catch (parseError) {
-                            reject(new Error("Invalid request"));
-                        }
-                    } else if (xhr.status === 500) {
-                        try {
-                            const errorData = JSON.parse(xhr.responseText);
-                            reject(new Error(errorData.error || "Server error occurred"));
-                        } catch (parseError) {
-                            reject(new Error("Server error occurred"));
-                        }
+                        resolve(JSON.parse(xhr.responseText));
                     } else {
-                        reject(new Error(`Server returned ${xhr.status}: ${xhr.statusText}`));
+                        reject(new Error("Server error or invalid request"));
                     }
                 }
             };
-
-            xhr.onerror = function() {
-                reject(new Error("Network error"));
-            };
-
             xhr.send(JSON.stringify({ topic: validation.value }));
         });
 
-        // Validate response
-        if (!response || !response.idea) {
-            throw new Error("Invalid response from server");
-        }
+        // --- NEW JSON PARSING BLOCK START ---
+        try {
+            // Check if response.idea is already an object or needs parsing
+            const ideaData = typeof response.idea === 'string' 
+                ? JSON.parse(response.idea) 
+                : response.idea;
 
-        // Safely display the result
-        safeDisplayText(resultBox, response.idea);
-        resultBox.style.color = "#757977ff"; // Green color for success
+            let formattedHtml = `
+                <h3 class="font-bold text-blue-700 text-lg mt-2">Business Idea</h3>
+                <p class="mb-4 text-gray-800">${ideaData.business_idea}</p>
+                
+                <h3 class="font-bold text-green-700 text-lg">Pros</h3>
+                <ul class="list-disc ml-5 mb-4 text-gray-700">
+                    ${ideaData.positive_points.map(p => `<li>${p}</li>`).join('')}
+                </ul>
+                
+                <h3 class="font-bold text-red-700 text-lg">Cons</h3>
+                <ul class="list-disc ml-5 mb-4 text-gray-700">
+                    ${ideaData.negative_points.map(p => `<li>${p}</li>`).join('')}
+                </ul>
+                
+                <h3 class="font-bold text-blue-700 text-lg">Next Steps</h3>
+                <ul class="list-decimal ml-5 text-gray-700">
+                    ${ideaData.implementation.map(step => `<li>${step}</li>`).join('')}
+                </ul>
+            `;
+            
+            resultBox.innerHTML = formattedHtml;
+            resultBox.style.color = "#1a202c";
+        } catch (parseErr) {
+            // Fallback if the AI fails to send perfect JSON
+            console.error("JSON Parse Error:", parseErr);
+            safeDisplayText(resultBox, response.idea);
+        }
+        // --- NEW JSON PARSING BLOCK END ---
 
     } catch (error) {
-        console.error("Error generating idea:", error);
-
-        // User-friendly error messages
-        let errorMessage = "Error: Could not generate idea. ";
-
-        if (error.message.includes("Failed to fetch")) {
-            errorMessage += "Please make sure the Flask server is running on port 5000.";
-        } else if (error.message.includes("NetworkError")) {
-            errorMessage += "Network error. Check your connection.";
-        } else {
-            errorMessage += error.message;
-        }
-
-        safeDisplayText(resultBox, errorMessage);
-        resultBox.style.color = "#ff6b6b"; // Red color for errors
+        console.error("Error:", error);
+        safeDisplayText(resultBox, "Error: " + error.message);
+        resultBox.style.color = "#ff6b6b";
     } finally {
         loadingText.classList.add("hidden");
     }

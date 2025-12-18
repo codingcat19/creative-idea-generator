@@ -67,7 +67,7 @@ app.post("/process", async (req, res) => {
         return res.json({ error: "Input is required" });
     }
 
-    // 1️⃣ CHECK IF INPUT ALREADY EXISTS IN DB
+    // CHECK IF INPUT ALREADY EXISTS IN DB
     const existing = await IdeaModel.findOne({ input: userInput });
 
     if (existing) {
@@ -78,11 +78,11 @@ app.post("/process", async (req, res) => {
         });
     }
 
-    // 2️⃣ OTHERWISE → CALL GEMINI API
+    // OTHERWISE → CALL GEMINI API
     console.log("🔵 Calling Gemini API...");
     const generatedOutput = await generateIdeaFromGemini(userInput);
 
-    // 3️⃣ SAVE IN DB
+    // SAVE IN DB
     const savedData = await IdeaModel.create({
         input: userInput,
         output: generatedOutput
