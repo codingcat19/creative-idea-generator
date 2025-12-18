@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import google.generativeai as genai
 from typing import TypedDict
 from typing_extensions import NotRequired
+import json
 
 # Load the environment variables from the .env file into the system environment
 load_dotenv()
@@ -17,25 +18,8 @@ if not api_key:
 # Configure the Gemini API using the retrieved key
 genai.configure(api_key=api_key)
 
+def generate_idea(topic: str):
 
-# Define the response schema using TypedDict
-class BusinessIdea(TypedDict):
-    business_idea: list[str]
-    positive_points: list[str]
-    negative_points: list[str]
-    implementation: list[str]
-
-
-def generate_idea(topic: str) -> BusinessIdea:
-    """
-    Generate a business idea for the given topic using Gemini API.
-    
-    Args:
-        topic: The business topic/domain to generate ideas for
-        
-    Returns:
-        BusinessIdea dictionary with structured data
-    """
     # Initialize the generative model
     model = genai.GenerativeModel("models/gemini-2.5-flash")
     
@@ -87,6 +71,6 @@ Be specific, practical, and insightful.
     )
     
     # Parse and return the JSON response
-    import json
+    
     result = json.loads(response.text)
     return result
