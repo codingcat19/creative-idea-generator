@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title> Creative Idea Generator</title>
+
+    <!-- TailwindCSS CDN -->
+    <link 
+        href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" 
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body class="bg-gray-100">
+
+    <div class="max-w-xl mx-auto mt-16 p-8 bg-white shadow-xl rounded-xl">
+
+        <h1 class="text-3xl font-bold text-center mb-4">
+             Creative Idea Generator
+        </h1>
+
+        <p class="text-gray-600 text-center mb-6">
+            Enter a topic and generate a creative one-sentence idea instantly.
+        </p>
+
+        <!-- Input Label -->
+        <label class="block text-gray-800 font-semibold mb-2">Enter Topic:</label>
+
+        <!-- Text Field -->
+        <input 
+            type="text" 
+            id="topicInput" 
+            class="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-400 outline-none"
+            placeholder="e.g. AI fitness app, Sci-fi story, Startup idea" 
+        />
+
+        <!-- Button -->
+        <button 
+            onclick="generateIdea()" 
+            class="w-full mt-5 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold transition">
+            Generate Idea
+        </button>
+
+        <!-- Output Section -->
+        <h2 class="text-xl font-semibold mt-8">Generated Idea:</h2>
+
+        <p 
+            id="result" 
+            class="mt-2 p-4 bg-gray-200 rounded-lg min-h-[60px] text-gray-800">
+        </p>
+
+        <!-- Loading Text -->
+        <p id="loading" class="hidden text-blue-600 font-medium mt-3">
+            Generating idea, please wait...
+        </p>
+
+    </div>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+    <script src="server.js"></script>
+    
+</body>
+</html>
+    
