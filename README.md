@@ -1,4 +1,3 @@
-```markdown
 # 🚀 Creative Idea Generator
 
 A sophisticated full-stack application that leverages **Google Gemini 1.5 Flash AI** to brainstorm creative business and project ideas. The system features a custom **MongoDB caching layer** to ensure speed and cost-efficiency.
