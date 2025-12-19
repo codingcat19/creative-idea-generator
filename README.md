@@ -1,7 +1,3 @@
-To provide a downloadable file, I have formatted the project details into a standard `README.md` structure. You can click the "Download" button on the code block below to save it directly to your project folder.
-
-I've ensured the **Docker** commands, **Environment Variable** setup, and **Folder Structure** align perfectly with the files you shared.
-
 ```markdown
 # 🚀 Creative Idea Generator
 
@@ -114,9 +110,5 @@ The application will be live at: **`http://localhost:8000`**
 ---
 
 *Developed with ❤️ for creative thinkers.*
-
-```
-
-Would you like me to help you generate a `.gitignore` file next to make sure your `.env` and `__pycache__` files don't get pushed to GitHub?
 
 ```
