@@ -19,7 +19,7 @@ ideas_collection = db["ideas"]
 def check_db_store():
     """Check and print all documents in the ideas collection."""
     try:
-           # Fetch all documents from the collection
+        # Fetch all documents from the collection
         documents = list(ideas_collection.find())
         if documents:
             print(f"Found {len(documents)} cached ideas:")
