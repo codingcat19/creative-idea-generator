@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 # Get MongoDB connection URI from environment; fallback to local MongoDB if not set
-mongo_uri = os.getenv("MONGO_URI", "mongodb://localhost:27017/")
+mongo_uri = os.getenv("MONGO_URI", "mongodb://mongodb:27017/")
 # Create a MongoDB client instance
 client = MongoClient(mongo_uri)
 

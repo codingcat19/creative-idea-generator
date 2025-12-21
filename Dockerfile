@@ -7,7 +7,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-ENV FLASK_APP=app.py
+ENV FLASK_APP=main.py
 ENV PORT=8000
 
 EXPOSE 8000 
