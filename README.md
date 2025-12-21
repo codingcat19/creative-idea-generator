@@ -25,7 +25,7 @@ The application follows a modern decoupled architecture:
 * **Styling:** TailwindCSS
 * **Containerization:** Docker & Docker Compose
 
----
+----
 
 ## 🚀 Getting Started
 
